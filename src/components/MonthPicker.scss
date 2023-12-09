@@ -1,0 +1,24 @@
+@import "../variables.scss";
+
+.month-select {
+  text-align: left;
+
+  select {
+    font-family: $defaultFont;
+    font-size: 2rem;
+    text-transform: capitalize;
+
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: "";
+    &::-ms-expand {
+      display: none;
+    }
+  }
+}

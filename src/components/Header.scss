@@ -1,0 +1,14 @@
+@import "../variables.scss";
+
+.app-header {
+  padding: 3vh 0;
+
+  img {
+    display: block;
+    max-height: 10vh;
+    width: 25vw;
+    object-fit: cover;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+}

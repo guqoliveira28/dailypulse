@@ -1,0 +1,43 @@
+@import "../variables.scss";
+
+.calendar {
+  min-width: 80vw;
+  max-width: 90vw;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  table {
+    border-spacing: 1vw 1vh;
+    background-color: $lightgrey;
+    margin: auto;
+    border-radius: 20px;
+
+    tr {
+      td {
+        height: 8vh;
+        width: 50px;
+        border: solid 3px $darkblue;
+        border-radius: 15px;
+        vertical-align: top;
+        overflow: hidden;
+        padding: 0;
+        cursor: pointer;
+
+        .cell-head {
+          height: 1vh;
+          width: 100%;
+          background-color: $darkblue;
+        }
+
+        &:hover {
+          border: solid 3px $darkblue2;
+          .cell-head {
+            background-color: $darkblue2;
+          }
+        }
+      }
+    }
+  }
+}
