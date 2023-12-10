@@ -4,11 +4,6 @@ import MonthPicker from "./MonthPicker";
 import DayPulse from "./DayPulse";
 import { createCalendarArray } from "../scripts/calendar";
 
-type pulseDay = {
-  dayNumber: number;
-  things: any[];
-};
-
 const numberOfColumns = 5;
 
 function getDaysInMonth(year: number, month: number) {
@@ -17,6 +12,7 @@ function getDaysInMonth(year: number, month: number) {
 
 export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedPulse, setSelectedPulse] = useState<pulseDay>();
 
   function handleMonthChange(event: React.ChangeEvent<HTMLSelectElement>) {
     let newDate = new Date(
@@ -24,6 +20,19 @@ export default function Calendar() {
     );
     setCurrentDate(newDate);
   }
+
+  function clearSelectedPulse() {
+    setSelectedPulse(undefined);
+  }
+
+  const handleSelectedPulse = (pulse: Nullable<pulseDay>) => {
+    if (pulse !== null) {
+      setSelectedPulse(pulse!);
+    } else {
+      console.error("Pulse was null!");
+    }
+    console.log(pulse);
+  };
 
   const daysOfMonth = getDaysInMonth(
     currentDate.getFullYear(),
@@ -33,7 +42,9 @@ export default function Calendar() {
 
   return (
     <div className="calendar">
-      <DayPulse />
+      {selectedPulse && (
+        <DayPulse pulse={selectedPulse} close={clearSelectedPulse} />
+      )}
       <MonthPicker
         currentMonth={currentDate.getMonth()}
         valueChanged={handleMonthChange}
@@ -43,7 +54,7 @@ export default function Calendar() {
           {calendarArray.map((row, index) => (
             <tr key={index}>
               {row.map((day: Nullable<pulseDay>, dayIndex) => (
-                <td key={dayIndex}>
+                <td key={dayIndex} onClick={() => handleSelectedPulse(day)}>
                   <div className="cell-head"></div>
                   <p>{day?.dayNumber}</p>
                 </td>

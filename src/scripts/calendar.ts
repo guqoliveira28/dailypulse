@@ -8,7 +8,11 @@ function createCalendarArray(
     calendarArray.push(new Array<Nullable<pulseDay>>(numberOfColumns));
     for (let j: number = 0; j < numberOfColumns; j++) {
       if (dayCount <= daysOfMonth) {
-        calendarArray[i].push({ dayNumber: dayCount++, things: [] });
+        calendarArray[i].push({
+          dayNumber: dayCount++,
+          pulses: [],
+          id: dayCount,
+        });
       }
     }
   }
