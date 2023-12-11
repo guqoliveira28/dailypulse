@@ -8,6 +8,11 @@
   justify-content: center;
   flex-direction: column;
 
+  .date-picker {
+    display: flex;
+    flex-direction: column;
+  }
+
   table {
     border-spacing: 1vw 1vh;
     background-color: $lightgrey;
