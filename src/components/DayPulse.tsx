@@ -7,13 +7,16 @@ export type ModalHandle = {
 
 const DayPulse = forwardRef<
   ModalHandle,
-  { pulse: any; close: React.MouseEventHandler<HTMLButtonElement> }
+  {
+    pulse: PulseDay;
+    close: React.MouseEventHandler<HTMLButtonElement>;
+  }
 >(function DayPulse(
   {
     pulse,
     close,
   }: {
-    pulse: any;
+    pulse: PulseDay;
     close: React.MouseEventHandler<HTMLButtonElement>;
   },
   ref: React.Ref<ModalHandle>
@@ -32,7 +35,15 @@ const DayPulse = forwardRef<
 
   return (
     <dialog ref={dialog} className="pulse-modal">
-      <p>Hello Wold</p>
+      <h2>Day {pulse?.date.toDateString()}</h2>
+      <div>
+        <section>
+          <h3>Selected Pulses</h3>
+        </section>
+        <section>
+          <h3>Avialable Pulses</h3>
+        </section>
+      </div>
       <form method="dialog">
         <button onClick={close}>Close</button>
       </form>

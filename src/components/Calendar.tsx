@@ -7,14 +7,10 @@ import YearPicker from "./YearPicker";
 
 const numberOfColumns = 5;
 
-function getDaysInMonth(year: number, month: number) {
-  return new Date(year, month + 1, 0).getDate();
-}
-
 export default function Calendar() {
   const modalRef: React.Ref<ModalHandle> = useRef(null);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedPulse, setSelectedPulse] = useState<pulseDay>();
+  const [selectedPulse, setSelectedPulse] = useState<PulseDay>();
 
   function handleMonthChange(event: React.ChangeEvent<HTMLSelectElement>) {
     let newDate = new Date(
@@ -34,9 +30,9 @@ export default function Calendar() {
     setSelectedPulse(undefined);
   }
 
-  const handleSelectedPulse = (pulse: Nullable<pulseDay>) => {
+  const handleSelectedPulse = (pulse: Nullable<PulseDay>) => {
     if (pulse !== null) {
-      setSelectedPulse(pulse!);
+      setSelectedPulse(pulse);
       modalRef.current?.openModal();
     } else {
       console.error("Pulse was null!");
@@ -44,17 +40,13 @@ export default function Calendar() {
     console.log(pulse);
   };
 
-  const daysOfMonth = getDaysInMonth(
-    currentDate.getFullYear(),
-    currentDate.getMonth()
-  );
-  const calendarArray = createCalendarArray(daysOfMonth, numberOfColumns);
+  const calendarArray = createCalendarArray(currentDate, numberOfColumns);
 
   return (
     <div className="calendar">
       <DayPulse
         ref={modalRef}
-        pulse={selectedPulse}
+        pulse={selectedPulse!}
         close={clearSelectedPulse}
       />
 
@@ -72,12 +64,19 @@ export default function Calendar() {
         <tbody>
           {calendarArray.map((row, index) => (
             <tr key={index}>
-              {row.map((day: Nullable<pulseDay>, dayIndex) => (
-                <td key={dayIndex} onClick={() => handleSelectedPulse(day)}>
-                  <div className="cell-head"></div>
-                  <p>{day?.dayNumber}</p>
-                </td>
-              ))}
+              {row.map((pulseDay: Nullable<PulseDay>, dayIndex) => {
+                let day = pulseDay?.date.getDate();
+
+                return (
+                  <td
+                    key={dayIndex}
+                    onClick={() => handleSelectedPulse(pulseDay)}
+                  >
+                    <div className="cell-head"></div>
+                    <p>{day}</p>
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
