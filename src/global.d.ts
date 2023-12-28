@@ -3,7 +3,7 @@ export {};
 declare global {
   type Nullable<T> = T | null;
 
-  type PulseDay = {
+  type DayEntry = {
     id: number;
     date: Date;
     pulses: Pulse[];

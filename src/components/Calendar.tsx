@@ -1,16 +1,17 @@
 import { useRef, useState } from "react";
 import "./Calendar.scss";
 import MonthPicker from "./MonthPicker";
-import DayPulse, { ModalHandle } from "./DayPulse";
+import DayEntryPopup, { ModalHandle } from "./DayEntryPopup";
 import { createCalendarArray } from "../scripts/calendar";
 import YearPicker from "./YearPicker";
+import { dummyDayEntries, dummyPulses } from "../assets/dummydb";
 
 const numberOfColumns = 5;
 
 export default function Calendar() {
   const modalRef: React.Ref<ModalHandle> = useRef(null);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedPulse, setSelectedPulse] = useState<PulseDay>();
+  const [selectedDay, setSelectedDay] = useState<Nullable<DayEntry>>(null);
 
   function handleMonthChange(event: React.ChangeEvent<HTMLSelectElement>) {
     let newDate = new Date(
@@ -26,28 +27,62 @@ export default function Calendar() {
     setCurrentDate(newDate);
   }
 
-  function clearSelectedPulse() {
-    setSelectedPulse(undefined);
+  function clearSelectedDayEntry() {
+    const dayEntriesIndex: number = dummyDayEntries.findIndex(
+      (dayEntry: DayEntry) => dayEntry.id === selectedDay?.id
+    );
+    if (dayEntriesIndex < 0) {
+      dummyDayEntries.push(selectedDay!);
+    } else {
+      dummyDayEntries[dayEntriesIndex] = { ...selectedDay! };
+    }
+    setSelectedDay(null);
   }
 
-  const handleSelectedPulse = (pulse: Nullable<PulseDay>) => {
+  const handleSelectedPulse = (pulse: Nullable<DayEntry>) => {
     if (pulse !== null) {
-      setSelectedPulse(pulse);
+      setSelectedDay(pulse);
       modalRef.current?.openModal();
     } else {
       console.error("Pulse was null!");
     }
-    console.log(pulse);
   };
 
-  const calendarArray = createCalendarArray(currentDate, numberOfColumns);
+  const handleAddPulse = (pulseId: number, dayPulse: DayEntry) => {
+    const pulse: Pulse | undefined = dummyPulses.find(
+      (dummy) => dummy.id === pulseId
+    );
+    if (pulse) {
+      dayPulse.pulses.push(pulse);
+      setSelectedDay({ ...dayPulse, pulses: [...dayPulse.pulses] });
+    } else {
+      console.error("Pulse was not found!");
+    }
+  };
+
+  const handleRemovePulse = (pulseId: number, dayPulse: DayEntry) => {
+    dayPulse.pulses = dayPulse.pulses.filter((p) => p.id !== pulseId);
+    setSelectedDay({ ...dayPulse, pulses: [...dayPulse.pulses] });
+  };
+
+  const calendarArray = createCalendarArray(
+    currentDate,
+    numberOfColumns,
+    dummyDayEntries
+  );
 
   return (
     <div className="calendar">
-      <DayPulse
+      <DayEntryPopup
         ref={modalRef}
-        pulse={selectedPulse!}
-        close={clearSelectedPulse}
+        currentDayEntry={selectedDay}
+        close={clearSelectedDayEntry}
+        addPulse={(selectedPulseId: number) =>
+          handleAddPulse(selectedPulseId, selectedDay!)
+        }
+        removePulse={(selectedPulseId: number) =>
+          handleRemovePulse(selectedPulseId, selectedDay!)
+        }
       />
 
       <div className="date-picker">
@@ -64,7 +99,7 @@ export default function Calendar() {
         <tbody>
           {calendarArray.map((row, index) => (
             <tr key={index}>
-              {row.map((pulseDay: Nullable<PulseDay>, dayIndex) => {
+              {row.map((pulseDay: Nullable<DayEntry>, dayIndex) => {
                 let day = pulseDay?.date.getDate();
 
                 return (

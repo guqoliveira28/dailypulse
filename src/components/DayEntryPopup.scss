@@ -1,0 +1,47 @@
+@import "../variables.scss";
+
+.pulse-modal {
+  h2 {
+    font-size: 1em;
+    text-transform: capitalize;
+  }
+
+  .pulses {
+    text-align: left;
+
+    h3 {
+      font-size: 1em;
+      margin: 0;
+    }
+
+    ul,
+    li {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    ul {
+      margin: 0 auto;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      white-space: nowrap;
+      max-height: 10em;
+      max-width: 12vw;
+    }
+
+    li {
+      margin: 1vh 1vw;
+      padding: 2px 2px;
+      flex: 1 1 auto;
+      text-align: center;
+      border: 2px solid;
+      width: fit-content;
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+}

@@ -4,9 +4,10 @@ function getDaysInMonth(year: number, month: number) {
 
 function createCalendarArray(
   currentDate: Date,
-  numberOfColumns: number
-): Array<Array<Nullable<PulseDay>>> {
-  const calendarArray = new Array<Array<Nullable<PulseDay>>>();
+  numberOfColumns: number,
+  dayEntries: DayEntry[]
+): Array<Array<Nullable<DayEntry>>> {
+  const calendarArray = new Array<Array<Nullable<DayEntry>>>();
   let dayCount = 1;
   const daysOfMonth = getDaysInMonth(
     currentDate.getFullYear(),
@@ -14,18 +15,25 @@ function createCalendarArray(
   );
 
   for (let i: number = 0; dayCount <= daysOfMonth; i++) {
-    calendarArray.push(new Array<Nullable<PulseDay>>(numberOfColumns));
+    calendarArray.push(new Array<Nullable<DayEntry>>(numberOfColumns));
     for (let j: number = 0; j < numberOfColumns; j++) {
       if (dayCount <= daysOfMonth) {
-        let date: Date = new Date(
+        const date: Date = new Date(
           currentDate.getFullYear(),
           currentDate.getMonth(),
           dayCount++
         );
+        const dayEntry: DayEntry | undefined = dayEntries.find(
+          (day) => day.date.getTime() === date.getTime()
+        );
+        let pulses: Pulse[] = [];
+        if (dayEntry) {
+          pulses = dayEntry.pulses;
+        }
         calendarArray[i].push({
           date: date,
-          pulses: [],
-          id: dayCount,
+          pulses: pulses,
+          id: date.getTime(),
         });
       }
     }
