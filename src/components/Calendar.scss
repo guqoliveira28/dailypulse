@@ -17,29 +17,44 @@
     border-spacing: 1vw 1vh;
     background-color: $lightgrey;
     margin: auto;
-    border-radius: 20px;
+    border-radius: 0;
 
     tr {
       td {
         height: 8vh;
         width: 50px;
-        border: solid 3px $darkblue;
-        border-radius: 15px;
+        border: solid 1px $darkblue;
+        border-radius: 0;
         vertical-align: top;
         overflow: hidden;
         padding: 0;
         cursor: pointer;
 
         .cell-head {
-          height: 1vh;
+          height: 2px;
           width: 100%;
           background-color: $darkblue;
         }
 
         &:hover {
-          border: solid 3px $darkblue2;
+          border: solid 1px $darkblue2;
           .cell-head {
             background-color: $darkblue2;
+          }
+        }
+
+        &.empty {
+          border: none;
+          cursor: default;
+        }
+
+        .pulses-color {
+          display: flex;
+          flex-direction: row;
+
+          div {
+            width: 1vh;
+            height: 1vh;
           }
         }
       }

@@ -30,7 +30,26 @@
       justify-content: space-between;
       white-space: nowrap;
       max-height: 10em;
-      max-width: 12vw;
+      max-width: 14vw;
+
+      &::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+      &::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background: rgba(0, 0, 0, 0.1);
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background: rgba(0, 0, 0, 0.2);
+      }
+      &::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.4);
+      }
+      &::-webkit-scrollbar-thumb:active {
+        background: rgba(0, 0, 0, 0.9);
+      }
     }
 
     li {

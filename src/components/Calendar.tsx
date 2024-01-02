@@ -2,11 +2,9 @@ import { useRef, useState } from "react";
 import "./Calendar.scss";
 import MonthPicker from "./MonthPicker";
 import DayEntryPopup, { ModalHandle } from "./DayEntryPopup";
-import { createCalendarArray } from "../scripts/calendar";
+import { createCalendarArray, getDaysOfTheWeek } from "../scripts/calendar";
 import YearPicker from "./YearPicker";
 import { dummyDayEntries, dummyPulses } from "../assets/dummydb";
-
-const numberOfColumns = 5;
 
 export default function Calendar() {
   const modalRef: React.Ref<ModalHandle> = useRef(null);
@@ -65,11 +63,7 @@ export default function Calendar() {
     setSelectedDay({ ...dayPulse, pulses: [...dayPulse.pulses] });
   };
 
-  const calendarArray = createCalendarArray(
-    currentDate,
-    numberOfColumns,
-    dummyDayEntries
-  );
+  const calendarArray = createCalendarArray(currentDate, dummyDayEntries);
 
   return (
     <div className="calendar">
@@ -96,18 +90,36 @@ export default function Calendar() {
         />
       </div>
       <table>
+        <thead>
+          <tr>
+            {getDaysOfTheWeek().map((row, index) => {
+              return <th key={index}>{row}</th>;
+            })}
+          </tr>
+        </thead>
         <tbody>
           {calendarArray.map((row, index) => (
             <tr key={index}>
-              {row.map((pulseDay: Nullable<DayEntry>, dayIndex) => {
-                let day = pulseDay?.date.getDate();
+              {row.map((dayEntry: Nullable<DayEntry>, dayIndex) => {
+                let day = dayEntry?.date.getDate();
+                if (!dayEntry) {
+                  return <td className="empty" key={dayIndex}></td>;
+                }
 
                 return (
                   <td
                     key={dayIndex}
-                    onClick={() => handleSelectedPulse(pulseDay)}
+                    onClick={() => handleSelectedPulse(dayEntry)}
                   >
                     <div className="cell-head"></div>
+                    <div className="pulses-color">
+                      {dayEntry?.pulses.map((pulse) => (
+                        <div
+                          key={pulse.id}
+                          style={{ backgroundColor: pulse.color }}
+                        ></div>
+                      ))}
+                    </div>
                     <p>{day}</p>
                   </td>
                 );
