@@ -7,7 +7,7 @@ export default function YearPicker({
   currentYear: number;
   valueChanged: Function;
 }) {
-  let years = [2022, 2023];
+  let years = [2023, 2024];
   return (
     <div className="year-select">
       <select value={currentYear} onChange={(event) => valueChanged(event)}>
