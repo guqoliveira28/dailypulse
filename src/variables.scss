@@ -23,3 +23,8 @@ $lightblue: #41a2fa;
 $defaultFont: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 
 $sideMargin: 10vw;
+
+@mixin background-opacity($color, $opacity: 0.3) {
+  background: $color; /* The Fallback */
+  background: rgba($color, $opacity);
+}

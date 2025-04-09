@@ -19,7 +19,7 @@ $table-cell-height: 8vh;
 
   table {
     border-spacing: 4px;
-    background-color: $lightgrey;
+    @include background-opacity($lightblue);
     margin: auto;
     border-radius: 0;
     max-width: 80%;
